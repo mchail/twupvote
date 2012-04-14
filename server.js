@@ -7,12 +7,16 @@ http.createServer(function (req, res) {
 
 var app = require('express').createServer();
 
+app.configure(function() {
+	app.set('views', __dirname + '/views');
+});
+
 app.get('/', function(req, res){
   res.send('hello world');
 });
 
 app.get('/test', function(req, res){
-  res.send('goodbye world');
+  res.render("index", {});
 });
 
 app.listen(process.env.PORT || 80);
