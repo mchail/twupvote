@@ -7,16 +7,15 @@ http.createServer(function (req, res) {
 
 var app = require('express').createServer();
 
+app.register('.html', require('jade'));
+
 app.configure(function() {
 	app.set('views', __dirname + '/views');
+  app.set("view options", {layout: false});
 });
 
 app.get('/', function(req, res){
-  res.send('hello world');
-});
-
-app.get('/test', function(req, res){
-  res.render("index", {});
+  res.render("index.jade");
 });
 
 app.listen(process.env.PORT || 80);
