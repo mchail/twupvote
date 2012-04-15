@@ -4,6 +4,12 @@ var app = require('express').createServer();
 var sockets = [];
 var datas = [];
 
+var cells = [];
+
+for (i = 0; i < 100; i++) {
+    cells.push(0);   
+}
+
 app.listen(process.env.PORT || 80);
 var io = require('socket.io').listen(app);
 
@@ -23,11 +29,15 @@ io.sockets.on('connection', function(socket) {
 		datas.push(data);
 		console.log(data);
 	});
+    
+    socket.on('color', function(data) {
+       console.log(data); 
+       
+       for(i = 0; i < sockets.length; i++) {
+            var s = sockets[i];
+            
+            s.emit('change', data);
+       }
+    });
 });
 
-setInterval(function() {
-	for (var i = 0; i < sockets.length; i++) {
-		var socket = sockets[i];
-		socket.emit('news', datas);
-	};
-}, 5000);
